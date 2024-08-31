@@ -22,7 +22,7 @@ jobs:
           python-version: 3.12.5
 
       - name: Pre-commit
-        uses: ./.github/actions/pre-commit
+        uses: ./.github/actions/run-pre-commit
 
       - name: Run Pytest
         run: CI=1 poetry run pytest --color=yes tests
