@@ -23,7 +23,7 @@ runs:
     shell: bash
     run: poetry check
 
-  - name: install 
+  - name: install
     if: steps.setup-python.outputs.cache-hit != 'true'
     shell: bash
     run: poetry install ${{ inputs.install-arguments }}

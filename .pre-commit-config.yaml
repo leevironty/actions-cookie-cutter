@@ -1,0 +1,44 @@
+repos:
+- repo: local
+  hooks:
+  - id: mypy
+    name: mypy
+    entry: poetry run mypy
+    language: system
+    types_or: [ python, pyi ]
+  - id: poetry check
+    name: poetry check
+    entry: poetry check
+    language: system
+    always_run: true
+    pass_filenames: false
+  - id: ruff
+    name: ruff
+    entry: poetry run ruff check --force-exclude
+    language: system
+    types_or: [python, pyi, jupyter]
+    args: []
+    require_serial: true
+  - id: ruff-format
+    name: ruff-format
+    entry: poetry run ruff format --force-exclude
+    language: system
+    types_or: [python, pyi, jupyter]
+    args: []
+    require_serial: true
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.6.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-toml
+  - id: check-yaml
+  - id: check-merge-conflict
+  - id: no-commit-to-branch
+  - id: trailing-whitespace
+    exclude_types:
+    - python
+    - pyi
+  - id: end-of-file-fixer
+    exclude_types:
+    - python
+    - pyi
