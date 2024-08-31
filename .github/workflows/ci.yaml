@@ -1,11 +1,25 @@
 name: CI
 
+env:
+  POETRY_VERSION: "1.8.2"
+  POETRY_HOME: "/opt/poetry"
+
 on:
-    push:
+  push:
 
 jobs:
-    lint:
-        runs-on: ubuntu-latest
-        name: Ruff
-        steps:
-            - run: echo Hello there!
+  lint:
+    runs-on: ubuntu-latest
+    name: Ruff
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12.5
+      - name: setup poetry
+        run: |
+          python3 -m venv $POETRY_HOME
+          $POETRY_HOME/bin/pip install poetry==$POETRY_VERSION
+          $POETRY_HOME/bin/poetry --version
+
