@@ -8,9 +8,9 @@ on:
   push:
 
 jobs:
-  lint:
+  ci:
     runs-on: ubuntu-latest
-    name: Ruff
+    name: Checks
     steps:
       - uses: actions/checkout@v4
       - name: check cahced poetry
@@ -32,5 +32,9 @@ jobs:
         with:
           python-version: 3.12.5
           cache: poetry
+      - name: get info
+        run: |
+          poetry env info
+          which python
       - name: Install deps
         run: poetry install
