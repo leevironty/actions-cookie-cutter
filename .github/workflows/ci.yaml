@@ -30,6 +30,7 @@ jobs:
           export PATH="$PATH:$POETRY_HOME/bin"
           echo PATH=$PATH
           which poetry
+          stat -c "%a %n" $(which poetry)
       - name: setup python
         uses: actions/setup-python@v5
         with:
