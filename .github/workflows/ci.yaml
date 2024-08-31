@@ -51,4 +51,18 @@ jobs:
         run: poetry install
       
       - name: ruff check
-        run: ruff check
+        id: ruff-check
+        continue-on-error: true
+        run: poetry run ruff check
+      
+      - name: ruff format
+        id: ruff-format
+        continue-on-error: true
+        run: poetry run ruff format --diff
+
+      - name: ruff failure
+        if: steps.ruff-check.outcome != 'success' || steps.ruff-format.outcome != 'success'
+        run: false
+      
+      - name: pytest
+        run: CI=1 poetry run pytest tests
