@@ -1,0 +1,32 @@
+name: 'Setup Poetry'
+description: 'Install and cache Poetry.'
+inputs:
+  poetry-home:
+    description: 'Poetry installation location'
+    required: true
+    default: /opt/poetry
+  poetry-version:
+    description: 'Version of poetry to install'
+    required: true
+
+runs:
+  using: composite
+  steps:
+  - name: check cached poetry
+    id: check-cached-poetry
+    uses: actions/cache@v4
+    with:
+      path: ${{ inputs.poetry-home }}
+      key: poetry-${{ runner.os }}-${{ runner.arch }}-${{ inputs.poetry-version }}
+
+  - name: install poetry
+    if: steps.check-cached-poetry.outputs.cache-hit != 'true'
+    shell: bash
+    run: |
+      python3 -m venv ${{ inputs.poetry-home }}
+      ${{ inputs.poetry-home }}/bin/pip install poetry==${{ inputs.poetry-version }}
+      ${{ inputs.poetry-home }}/bin/poetry --version
+
+  - name: setup PATH
+    shell: bash
+    run: echo ${{ inputs.poetry-home }}/bin >> $GITHUB_PATH
