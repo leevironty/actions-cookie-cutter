@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "actions-cookie-cutter"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12,<4"
+pydantic = "^2.8.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+ruff = "^0.6.3"
+pre-commit = "^3.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "N",
+    "F",
+    "UP",
+    "B",
+    "SIM",
+    "I",
+    "A",
+    "RUF"
+]
+
+[tool.ruff.format]
+quote-style = "single"
