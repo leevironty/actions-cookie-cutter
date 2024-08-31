@@ -23,39 +23,27 @@ jobs:
         uses: ./.github/actions/setup-python
         with:
           python-version: 3.12.5
-
-      # - name: setup python
-      #   id: setup-python
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: 3.12.5
-      #     cache: poetry
-
-      # - name: get info
-      #   run: |
-      #     poetry env info
-      #     which python
-
-      # - name: check lockfile
-      #   run: poetry check
-
-      # - name: install 
-      #   if: steps.setup-python.outputs.cache-hit != 'true'
-      #   run: poetry install
       
-      - name: ruff check
-        id: ruff-check
-        continue-on-error: true
-        run: poetry run ruff check
+      - name: ruff
+        run: |
+          success=true
+          poetry run ruff check || success=false
+          poetry run ruff format --diff || success=false
+          $success
       
-      - name: ruff format
-        id: ruff-format
-        continue-on-error: true
-        run: poetry run ruff format --diff
+      # - name: ruff check
+      #   id: ruff-check
+      #   continue-on-error: true
+      #   run: poetry run ruff check
+      
+      # - name: ruff format
+      #   id: ruff-format
+      #   continue-on-error: true
+      #   run: poetry run ruff format --diff
 
-      - name: ruff failure
-        if: steps.ruff-check.outcome != 'success' || steps.ruff-format.outcome != 'success'
-        run: false
+      # - name: ruff failure
+      #   if: steps.ruff-check.outcome != 'success' || steps.ruff-format.outcome != 'success'
+      #   run: false
       
       - name: pytest
         run: CI=1 poetry run pytest tests
