@@ -14,45 +14,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: check cached poetry
-      #   id: check-cached-poetry
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ${{ env.POETRY_HOME }}
-      #     key: poetry-${{ runner.os }}-${{ runner.arch }}-${{ env.POETRY_VERSION }}
-
-      # - name: install poetry
-      #   if: steps.check-cached-poetry.outputs.cache-hit != 'true'
-      #   run: |
-      #     python3 -m venv $POETRY_HOME
-      #     $POETRY_HOME/bin/pip install poetry==$POETRY_VERSION
-      #     $POETRY_HOME/bin/poetry --version
-
-      # - name: setup PATH
-      #   run: echo $POETRY_HOME/bin >> $GITHUB_PATH
       - name: setup poetry
         uses: ./.github/actions/setup-poetry
         with:
           poetry-version: 1.8.2
 
       - name: setup python
-        id: setup-python
-        uses: actions/setup-python@v5
+        uses: ./.github/actions/setup-python
         with:
           python-version: 3.12.5
-          cache: poetry
 
-      - name: get info
-        run: |
-          poetry env info
-          which python
+      # - name: setup python
+      #   id: setup-python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: 3.12.5
+      #     cache: poetry
 
-      - name: check lockfile
-        run: poetry check
+      # - name: get info
+      #   run: |
+      #     poetry env info
+      #     which python
 
-      - name: install 
-        if: steps.setup-python.outputs.cache-hit != 'true'
-        run: poetry install
+      # - name: check lockfile
+      #   run: poetry check
+
+      # - name: install 
+      #   if: steps.setup-python.outputs.cache-hit != 'true'
+      #   run: poetry install
       
       - name: ruff check
         id: ruff-check

@@ -1,0 +1,29 @@
+name: 'Setup Packages'
+description: 'Set up python & install packages.'
+inputs:
+  python-version:
+    required: true
+    description: 'Used python version'
+  install-arguments:
+    required: false
+    description: 'Arguments for poetry install'
+    default: ''
+
+runs:
+  using: composite
+  steps:
+  - name: setup python
+    id: setup-python
+    uses: actions/setup-python@v5
+    with:
+      python-version: ${{ inputs.python-version }}
+      cache: poetry
+
+  - name: check lockfile
+    shell: bash
+    run: poetry check
+
+  - name: install 
+    if: steps.setup-python.outputs.cache-hit != 'true'
+    shell: bash
+    run: poetry install ${{ inputs.install-arguments }}
