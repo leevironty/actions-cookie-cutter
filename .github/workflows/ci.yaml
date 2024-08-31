@@ -26,11 +26,7 @@ jobs:
           $POETRY_HOME/bin/pip install poetry==$POETRY_VERSION
           $POETRY_HOME/bin/poetry --version
       - name: setup PATH
-        run: |
-          export PATH="$PATH:$POETRY_HOME/bin"
-          echo PATH=$PATH
-          which poetry
-          stat -c "%a %n" $(which poetry)
+        run: echo $POETRY_HOME/bin >> $GITHUB_PATH
       - name: setup python
         uses: actions/setup-python@v5
         with:
