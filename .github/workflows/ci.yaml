@@ -1,9 +1,5 @@
 name: CI
 
-# env:
-#   POETRY_VERSION: "1.8.2"
-#   POETRY_HOME: "/opt/poetry"
-
 on:
   push:
 
@@ -13,18 +9,19 @@ jobs:
     name: Checks
     steps:
       - uses: actions/checkout@v4
+        name: Checkout
 
-      - name: setup poetry
+      - name: Setup Poetry
         uses: ./.github/actions/setup-poetry
         with:
           poetry-version: 1.8.2
 
-      - name: setup python
+      - name: Setup Python
         uses: ./.github/actions/setup-python
         with:
           python-version: 3.12.5
       
-      - name: ruff
+      - name: Run Ruff check & format
         run: |
           success=true
           echo Check:
@@ -33,19 +30,5 @@ jobs:
           poetry run ruff format --diff || success=false
           $success
       
-      # - name: ruff check
-      #   id: ruff-check
-      #   continue-on-error: true
-      #   run: poetry run ruff check
-      
-      # - name: ruff format
-      #   id: ruff-format
-      #   continue-on-error: true
-      #   run: poetry run ruff format --diff
-
-      # - name: ruff failure
-      #   if: steps.ruff-check.outcome != 'success' || steps.ruff-format.outcome != 'success'
-      #   run: false
-      
-      - name: pytest
+      - name: Run Pytest
         run: CI=1 poetry run pytest tests
