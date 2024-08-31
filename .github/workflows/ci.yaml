@@ -27,7 +27,9 @@ jobs:
       - name: ruff
         run: |
           success=true
+          echo Check:
           poetry run ruff check || success=false
+          echo Format:
           poetry run ruff format --diff || success=false
           $success
       
