@@ -13,13 +13,22 @@ jobs:
     name: Ruff
     steps:
       - uses: actions/checkout@v4
-      - name: setup python
-        uses: actions/setup-python@v5
+      - name: check cahced poetry
+        id: check-cached-poetry
+        uses: actions/cache@v4
         with:
-          python-version: 3.12.5
+          path: ${{ env.POETRY_HOME }}
+          key: poetry-${{ runner.os }}-${{ runner.arch }}-${{ env.POETRY_VERSION }}
       - name: setup poetry
+        if: steps.check-cached-poetry.outputs.cache-hit != 'true'
         run: |
           python3 -m venv $POETRY_HOME
           $POETRY_HOME/bin/pip install poetry==$POETRY_VERSION
           $POETRY_HOME/bin/poetry --version
-
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12.5
+          cache: poetry
+      - name: Install deps
+        run: poetry install
